@@ -1,4 +1,6 @@
-const API_KEY = '33aa00aa5bb84555883111043231012';
+
+import { getSecret } from '$lib/secret.js'
+const API_KEY = getSecret();
 const BASE_URL = 'http://api.weatherapi.com/v1/current.json?';
 
 export async function getWeatherData(city) {
