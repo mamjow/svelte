@@ -1,0 +1,41 @@
+name: Docker Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
+
+    - name: Build and Push Docker Image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker build -t your-image-name .
+        docker tag your-image-name $DOCKER_USERNAME/your-image-name
+        docker push $DOCKER_USERNAME/your-image-name
+
+    - name: Install kubectl
+      uses: steebchen/kubectl@v2
+      with:
+        version: "latest"
+
+    - name: Deploy to Local Kubernetes Cluster
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      run: |
+        echo "$KUBE_CONFIG_DATA" | base64 --decode > kubeconfig.yaml
+        kubectl --kubeconfig=kubeconfig.yaml apply -f deployment.yaml
