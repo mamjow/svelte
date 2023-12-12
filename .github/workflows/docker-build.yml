@@ -24,13 +24,21 @@ jobs:
           username: mamjo
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push UI Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./dockerfile
+          file: ./dockerfileUi
           push: true
-          tags:  mamjo/weather:latest
+          tags:  mamjo/weather/ui:latest
+
+      - name: Build and push API Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./dockerfileApi
+          push: true
+          tags:  mamjo/weather/api:latest
 
 # jobs:
 #   build:

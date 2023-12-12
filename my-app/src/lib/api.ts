@@ -1,10 +1,11 @@
+import type { CurrentWeather } from "./CurrentWeather";
 
-import { getSecret } from '$lib/secret.js'
-const API_KEY = getSecret();
-const BASE_URL = 'http://api.weatherapi.com/v1/current.json?';
+import { getUrl } from '$lib/secret.ts'
+const API_URL = getUrl();
 
-export async function getWeatherData(city) {
-  const response = await fetch(`${BASE_URL}key=${API_KEY}&q=${city}`);
+export async function getWeatherData(city: string) {
+  const response = await fetch(`${API_URL}/WeatherForecast/${city}`);
   const data = await response.json();
-  return data;
+  console.log(data);
+  return data as CurrentWeather;
 }

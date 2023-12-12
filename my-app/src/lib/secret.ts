@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/public';
 
-export function getSecret() {
-    return env.PUBLIC_API_KEY
+export function getUrl() {
+    return env.PUBLIC_BACKEND_URL
 }
