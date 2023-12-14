@@ -10,9 +10,9 @@ jobs:
           - name: 'check it out'
             uses: actions/checkout@v3
           - name: Set up secret file
-              env:
-                AWS_ACCESS_KEY_ID: ${{ secrets.MA_KUBE_CONFIG }}
-              run: |
+            env:
+              AWS_ACCESS_KEY_ID: ${{ secrets.MA_KUBE_CONFIG }}
+            run: |
                 echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
 
           - name: helm-deploy
