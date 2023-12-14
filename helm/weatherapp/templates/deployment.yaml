@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapp-backend-deployment
+  labels:
+    app: weatherapi
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: weatherapi
+  template:
+    metadata:
+      labels:
+        app: weatherapi
+    spec:
+      containers:
+      - name: weatherapi
+        image: {{ .Values.image.backend }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: json-configmap
+          mountPath: /app/config
+      volumes:
+        - name: json-configmap
+          configMap:
+            name: backend-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapp-ui-deployment
+  labels:
+    app: weatherui
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: weatherui
+  template:
+    metadata:
+      labels:
+        app: weatherui
+    spec:
+      containers:
+      - name: weatherui
+        image: {{ .Values.image.ui }}
+        envFrom:
+          - configMapRef:
+              name: ui-config
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4173
+          protocol: TCP

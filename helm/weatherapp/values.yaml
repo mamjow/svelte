@@ -1,0 +1,5 @@
+
+replicaCount: 1
+image:
+  backend: mamjo/weather:api
+  ui: mamjo/weather:ui

@@ -14,11 +14,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 WeatherAPIConfig weatherAPIConfig = new();
 builder.Configuration.GetSection(WeatherAPIConfig.ConfigName).Bind(weatherAPIConfig);
-
+var frontEndDomain = builder.Configuration.GetValue<string>("frontEndDomain") ?? "http://localhost:5173";
 builder.Services.AddCors(option => {
 	option.AddPolicy("AllowSpecificOrigin",
 					builder => builder
-						.WithOrigins("http://localhost:5173") 
+						.WithOrigins(frontEndDomain) 
 						.AllowAnyMethod()
 						.AllowAnyHeader()
 						.AllowCredentials());

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  appSettings.json: |
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui-config
+data:
+  PUBLIC_BACKEND_URL: "api-service"
+---

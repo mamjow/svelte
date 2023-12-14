@@ -39,41 +39,31 @@ jobs:
           file: ./dockerfileApi
           push: true
           tags:  mamjo/weather:api
+  
 
-# jobs:
-#   build:
-#     name: Build and Push
-#     runs-on: ubuntu-latest
-#     env:
-#       IMG_NAME: ${{ github.repository }}
+  deploy-helm-chart:
+    runs-on: ubuntu-latest
 
-#     steps:
-#     - name: Checkout Repository
-#       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#     - name: Set up Node.js
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: 14
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.0.2'
 
-#     - name: Build and Push Docker Image
-#       env:
-#         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-#         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-#       run: |
-#         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-#         docker build -t your-image-name .
-#         docker tag your-image-name $DOCKER_USERNAME/your-image-name
-#         docker push $DOCKER_USERNAME/your-image-name
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
 
-#     - name: Install kubectl
-#       uses: steebchen/kubectl@v2
-#       with:
-#         version: "latest"
+      - name: Set up kubeconfig
+        run: |
+          echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.MA_KUBE_CONFIG }}
 
-#     - name: Deploy to Local Kubernetes Cluster
-#       env:
-#         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#       run: |
-#         echo "$KUBE_CONFIG_DATA" | base64 --decode > kubeconfig.yaml
-#         kubectl --kubeconfig=kubeconfig.yaml apply -f deployment.yaml
+      - name: Install Helm chart
+        run: |
+          helm install weatherapp /helm/weatherapp
