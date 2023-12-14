@@ -15,10 +15,11 @@ builder.Services.AddEndpointsApiExplorer();
 WeatherAPIConfig weatherAPIConfig = new();
 builder.Configuration.GetSection(WeatherAPIConfig.ConfigName).Bind(weatherAPIConfig);
 var frontEndDomain = builder.Configuration.GetValue<string>("frontEndDomain") ?? "http://localhost:5173";
-//builder.Services.AddCors(option => {
+//builder.Services.AddCors(option =>
+//{
 //	option.AddDefaultPolicy(
 //					builder => builder
-//						.WithOrigins(frontEndDomain) 
+//						.WithOrigins(frontEndDomain)
 //						.AllowAnyMethod()
 //						.AllowAnyHeader());
 //});
@@ -39,7 +40,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
