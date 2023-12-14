@@ -13,7 +13,8 @@ jobs:
               env:
                 AWS_ACCESS_KEY_ID: ${{ secrets.MA_KUBE_CONFIG }}
               run: |
-                  echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
+                echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
+
           - name: helm-deploy
             uses: WyriHaximus/github-action-helm3@v2.0
             with:
