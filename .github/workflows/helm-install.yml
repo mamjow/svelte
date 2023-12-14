@@ -14,6 +14,6 @@ jobs:
           - name: helm-deploy
             uses: WyriHaximus/github-action-helm3@v2.0
             with:
-              exec: helm upgrade watherapp ./helm/weatherapp --install --create-namespace watherapp
+              exec: helm upgrade weatherapp ./helm/weatherapp --install --create-namespace --namespace weatherapp
               kubeconfig: '${{ secrets.MA_KUBE_CONFIG }}'
 
