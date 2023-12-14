@@ -1,14 +1,24 @@
+
+{{ if not (lookup "v1" "ConfigMap" "weatherapp" "backend-config") }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: backend-config
+  annotations:
+    "helm.sh/resource-policy": keep
 data:
   appSettings.json: |
+{{ end}}
 ---
+{{ if not (lookup "v1" "ConfigMap" "weatherapp" "ui-config") }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ui-config
+  annotations:
+    "helm.sh/resource-policy": keep
 data:
-  PUBLIC_BACKEND_URL: "api-service"
+  PUBLIC_BACKEND_URL: "http://api.moshiri.nl"
+{{ end}}
 ---
+

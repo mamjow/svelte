@@ -17,7 +17,7 @@ spec:
       containers:
       - name: weatherapi
         image: {{ .Values.image.backend }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
           protocol: TCP
@@ -51,7 +51,7 @@ spec:
         envFrom:
           - configMapRef:
               name: ui-config
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 4173
           protocol: TCP
