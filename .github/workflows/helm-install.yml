@@ -9,8 +9,6 @@ jobs:
     steps:  
           - name: 'check it out'
             uses: actions/checkout@v3
-          - name: Check for dockerenv file
-            run: (ls ./ & echo Found dockerenv) || (echo No dockerenv)
           - name: helm-deploy
             uses: WyriHaximus/github-action-helm3@v2.0
             with:
